@@ -19,7 +19,7 @@
 # 使用方法
 1. 确保 Global 物体下的Init勾选了ILRuntimeMode
 2. 打开工具(Tools/打卡服务器选项)
-3. 点击构建DLL(ps. 构建完成的DLL在Unity\Temp\MyAssembly下，会自带Copy到工程的Resources/Code里)
+3. 点击构建DLL(ps. 构建完成的DLL在Unity\Temp\MyAssembly下，会自动Copy到工程的Resources/Code里)
 4. 点击刷新资源
 5. 每次修改代码后需要重复3.4.两个步骤
 
