@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -95,7 +95,7 @@ namespace ILRuntime.Reflection
                 KeyValuePair<string, IType>[] ga = new KeyValuePair<string, IType>[typeArguments.Length];
                 for (int i = 0; i < ga.Length; i++)
                 {
-                    string key = ILType.TypeReference.GenericParameters[0].Name;
+                    string key = ILType.TypeReference.GenericParameters[i].Name;
                     if (typeArguments[i] is ILRuntimeType)
                         ga[i] = new KeyValuePair<string, IType>(key, ((ILRuntimeType)typeArguments[i]).ILType);
                     else
@@ -326,7 +326,7 @@ namespace ILRuntime.Reflection
             }
             if ((bindingAttr & BindingFlags.DeclaredOnly) != BindingFlags.DeclaredOnly)
             {
-                if (BaseType != null && BaseType is ILRuntimeWrapperType)
+                if (BaseType != null && (BaseType is ILRuntimeWrapperType))
                 {
                     res.AddRange(BaseType.GetFields(bindingAttr));
                 }
@@ -422,7 +422,7 @@ namespace ILRuntime.Reflection
             }
             if ((bindingAttr & BindingFlags.DeclaredOnly) != BindingFlags.DeclaredOnly)
             {
-                if (BaseType != null && BaseType is ILRuntimeWrapperType)
+                if (BaseType != null && (BaseType is ILRuntimeWrapperType || BaseType is ILRuntimeType ))
                 {
                     res.AddRange(BaseType.GetProperties(bindingAttr));
                 }

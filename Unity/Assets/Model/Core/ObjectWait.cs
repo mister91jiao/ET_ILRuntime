@@ -105,7 +105,7 @@ namespace ET
                     }
                     else
                     {
-                        Log.Info("cancellationToken 已经取消过了");
+                        Log.Error("cancellationToken 已经取消过了");
                     }
                 }
                 ret = await tcs.Task;

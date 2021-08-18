@@ -60,7 +60,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_Options_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            ET.Options @Options = (ET.Options)typeof(ET.Options).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.Options @Options = (ET.Options)typeof(ET.Options).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             ET.GloabDefine.Options = @Options;
             return ptr_of_this_method;
         }
@@ -84,7 +84,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_ILog_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            ET.ILog @ILog = (ET.ILog)typeof(ET.ILog).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ILog @ILog = (ET.ILog)typeof(ET.ILog).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             ET.GloabDefine.ILog = @ILog;
             return ptr_of_this_method;
         }

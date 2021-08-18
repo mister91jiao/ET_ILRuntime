@@ -1,4 +1,4 @@
-# 基于 ET(Commits1532版本)的接入ILRuntimeV1.6.7热更
+# 基于 ET(Commits1532版本)的接入ILRuntime(Commits1218)版本热更
 
 ### 参考引用了一下大佬的代码
 [最弱的菜鸡] https://gitee.com/JFZN/et6.0-ilruntime
@@ -28,7 +28,7 @@
 5. 每次修改代码后需要重复3.4.两个步骤
 
 # 待完善问题
-1. ILRuntime模式下"ObjectWait.Wait<T>"方法会有CancellationToken重复取消问题，导致AI系统可能会有Bug
+1. ILRuntime模式下"ObjectWait.Wait<T>"方法会有CancellationToken重复取消问题，导致AI系统可能会有Bug(已解决，ILRuntime版本问题)
 2. 代码结构缺乏整理
 3. 一些宏定义也需要进一步整理
 

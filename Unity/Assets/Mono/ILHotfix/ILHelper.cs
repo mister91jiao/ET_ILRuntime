@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using ILRuntime.Runtime;
 using ILRuntime.Runtime.Generated;
 using ILRuntime.Runtime.Intepreter;
 using UnityEngine;
@@ -18,9 +19,10 @@ namespace ET
         /// </summary>
         public static AppDomain InitILRuntimeAppdomain(byte[] dllByte, byte[] pdbByte)
         {
-            AppDomain appdomain = new AppDomain();
+            AppDomain appdomain = new AppDomain(ILRuntimeJITFlags.NoJIT);
             appdomain.LoadAssembly(new MemoryStream(dllByte), new MemoryStream(pdbByte),
                 new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
+            
             return appdomain;
         }
         

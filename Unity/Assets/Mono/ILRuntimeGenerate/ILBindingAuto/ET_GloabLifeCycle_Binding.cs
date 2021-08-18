@@ -64,7 +64,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_StartAction_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Action @StartAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Action @StartAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             ET.GloabLifeCycle.StartAction = @StartAction;
             return ptr_of_this_method;
         }
@@ -88,7 +88,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_UpdateAction_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Action @UpdateAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Action @UpdateAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             ET.GloabLifeCycle.UpdateAction = @UpdateAction;
             return ptr_of_this_method;
         }
@@ -112,7 +112,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_LateUpdateAction_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Action @LateUpdateAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Action @LateUpdateAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             ET.GloabLifeCycle.LateUpdateAction = @LateUpdateAction;
             return ptr_of_this_method;
         }
@@ -136,7 +136,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_OnApplicationQuitAction_3(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Action @OnApplicationQuitAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Action @OnApplicationQuitAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             ET.GloabLifeCycle.OnApplicationQuitAction = @OnApplicationQuitAction;
             return ptr_of_this_method;
         }

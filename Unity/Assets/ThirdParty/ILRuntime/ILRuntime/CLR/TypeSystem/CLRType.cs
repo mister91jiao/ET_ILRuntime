@@ -26,6 +26,7 @@ namespace ILRuntime.CLR.TypeSystem
         Dictionary<int, CLRFieldGetterDelegate> fieldGetterCache;
         Dictionary<int, CLRFieldSetterDelegate> fieldSetterCache;
         Dictionary<int, KeyValuePair<CLRFieldBindingDelegate, CLRFieldBindingDelegate>> fieldBindingCache;
+        StackObject defaultObject;
 
         Dictionary<int, int> fieldIdxMapping;
         IType[] orderedFieldTypes;
@@ -43,7 +44,10 @@ namespace ILRuntime.CLR.TypeSystem
         ILRuntimeWrapperType wraperType;
         ValueTypeBinder valueTypeBinder;
 
+        int valuetypeFieldCount, valuetypeManagedCount;
+        bool valuetypeSizeCalculated;
         int hashCode = -1;
+        int tIdx = -1;
         static int instance_id = 0x20000000;
 
         public Dictionary<int, FieldInfo> Fields
@@ -101,6 +105,34 @@ namespace ILRuntime.CLR.TypeSystem
             isEnum = clrType.IsEnum;
             isValueType = clrType.IsValueType;
             isDelegate = clrType.BaseType == typeof(MulticastDelegate);
+            if (isPrimitive)
+            {
+                var t = TypeForCLR;
+                if (t == typeof(int) || t == typeof(uint) || t == typeof(short) || t == typeof(ushort) || t == typeof(byte) || t == typeof(sbyte) || t == typeof(char) || t == typeof(bool))
+                {
+                    defaultObject.ObjectType = ObjectTypes.Integer;
+                    defaultObject.Value = 0;
+                    defaultObject.ValueLow = 0;
+                }
+                else if (t == typeof(long) || t == typeof(ulong))
+                {
+                    defaultObject.ObjectType = ObjectTypes.Long;
+                    defaultObject.Value = 0;
+                    defaultObject.ValueLow = 0;
+                }
+                else if (t == typeof(float))
+                {
+                    defaultObject.ObjectType = ObjectTypes.Float;
+                    defaultObject.Value = 0;
+                    defaultObject.ValueLow = 0;
+                }
+                else if (t == typeof(double))
+                {
+                    defaultObject.ObjectType = ObjectTypes.Double;
+                    defaultObject.Value = 0;
+                    defaultObject.ValueLow = 0;
+                }
+            }
         }
 
         public bool IsGenericInstance
@@ -283,6 +315,24 @@ namespace ILRuntime.CLR.TypeSystem
                 }
                 else
                     return null;
+            }
+        }
+
+        public StackObject DefaultObject
+        {
+            get
+            {
+                return defaultObject;
+            }
+        }
+
+        public int TypeIndex
+        {
+            get
+            {
+                if (tIdx < 0)
+                    tIdx = appdomain.AllocTypeIndex(this);
+                return tIdx;
             }
         }
 
@@ -598,16 +648,40 @@ namespace ILRuntime.CLR.TypeSystem
 
             return -1;
         }
-        public IType FindGenericArgument(string key)
+
+        public IType FindGenericArgument ( string key )
         {
-            if (genericArguments != null)
+            var o = this.Generic ( key );
+            if ( o == null )
             {
-                foreach (var i in genericArguments)
+                var aGenericParameters = this.TypeForCLR.GetGenericArguments ();
+                if ( aGenericParameters !=null )
                 {
-                    if (i.Key == key)
-                        return i.Value;
+                    for ( int i = 0; i < aGenericParameters.Length; i++ )
+                    {
+                        if ( aGenericParameters [ i ].Name == key )
+                        {
+                            return this.Generic ( "!" + i );
+                        }
+                    }
                 }
             }
+            return o;
+        }
+
+        private IType Generic ( string key )
+        {
+            if ( this.genericArguments != null )
+            {
+                for ( int i = 0; i < this.genericArguments.Length; i++ )
+                {
+                    if ( this.genericArguments [ i ].Key == key )
+                    {
+                        return this.genericArguments [ i ].Value;
+                    }
+                }
+            }
+
             return null;
         }
         public IMethod GetMethod(string name, int paramCount, bool declaredOnly = false)
@@ -749,8 +823,8 @@ namespace ILRuntime.CLR.TypeSystem
                                 continue;
                             for (int j = 0; j < param.Count; j++)
                             {
-                                var typeA = param[j].TypeForCLR.IsByRef ? param[j].TypeForCLR.GetElementType() : param[j].TypeForCLR;
-                                var typeB = i.Parameters[j].TypeForCLR.IsByRef ? i.Parameters[j].TypeForCLR.GetElementType() : i.Parameters[j].TypeForCLR;
+                                var typeA = /*param[j].TypeForCLR.IsByRef ? param[j].TypeForCLR.GetElementType() : */param[j].TypeForCLR;
+                                var typeB = /*i.Parameters[j].TypeForCLR.IsByRef ? i.Parameters[j].TypeForCLR.GetElementType() : */i.Parameters[j].TypeForCLR;
 
                                 if (typeA != typeB)
                                 {
@@ -958,6 +1032,44 @@ namespace ILRuntime.CLR.TypeSystem
         public IType ResolveGenericType(IType contextType)
         {
             throw new NotImplementedException();
+        }
+        public void GetValueTypeSize(out int fieldCout, out int managedCount)
+        {
+            if (!valuetypeSizeCalculated)
+            {
+                var cnt = TotalFieldCount;
+                valuetypeFieldCount = cnt + 1;
+                valuetypeManagedCount = 0;
+                for (int i = 0; i < cnt; i++)
+                {
+                    var it = OrderedFieldTypes[i] as CLRType;
+                    if (it.IsValueType)
+                    {
+                        if (!it.IsPrimitive && !it.IsEnum)
+                        {
+                            if (it.ValueTypeBinder != null)
+                            {
+                                int fSize, fmCnt;
+                                it.GetValueTypeSize(out fSize, out fmCnt);
+                                valuetypeFieldCount += fSize;
+                                valuetypeManagedCount += fmCnt;
+                            }
+                            else
+                            {
+                                valuetypeManagedCount++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        valuetypeManagedCount++;
+                    }
+                }
+
+                valuetypeSizeCalculated = true;
+            }
+            fieldCout = valuetypeFieldCount;
+            managedCount = valuetypeManagedCount;
         }
 
         public override int GetHashCode()

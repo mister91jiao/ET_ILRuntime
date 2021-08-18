@@ -7,7 +7,6 @@ using ILRuntime.CLR.TypeSystem;
 using ILRuntime.CLR.Method;
 using ILRuntime.Other;
 using ILRuntime.Runtime.Intepreter;
-using UnityEngine;
 
 namespace ILRuntime.Runtime.Enviorment
 {
@@ -241,20 +240,6 @@ namespace ILRuntime.Runtime.Enviorment
         internal IDelegateAdapter FindDelegateAdapter(ILTypeInstance instance, ILMethod ilMethod, IMethod method)
         {
             IDelegateAdapter res;
-
-#if UNITY_EDITOR
-            try
-            {
-                IType It = method.ReturnType;
-            }
-            catch
-            {
-                Debug.LogError("发现未正常使用委托[ " + ilMethod.ToString() + " ]");
-            }
-#endif
-            
-            
-            
             if (method.ReturnType == appdomain.VoidType)
             {
                 if (method.ParameterCount == 0)
