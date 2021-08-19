@@ -40,22 +40,27 @@ namespace ET
             //启用UnSafe
             assemblyBuilder.compilerOptions.AllowUnsafeCode = true;
 
-            assemblyBuilder.compilerOptions.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_4_6;
-
+            
+            BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
+            
+            assemblyBuilder.compilerOptions.ApiCompatibilityLevel =
+                PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
+           // assemblyBuilder.compilerOptions.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_4_6;
+           
             assemblyBuilder.compilerOptions.CodeOptimization = CodeOptimization.Release;
 
             assemblyBuilder.flags = AssemblyBuilderFlags.EditorAssembly;
             //AssemblyBuilderFlags.None                 正常发布
             //AssemblyBuilderFlags.DevelopmentBuild     开发模式打包
             //AssemblyBuilderFlags.EditorAssembly       编辑器状态
-            
         
             assemblyBuilder.referencesOptions = ReferencesOptions.UseEngineModules;
 
             assemblyBuilder.buildTarget = EditorUserBuildSettings.activeBuildTarget;
 
-            assemblyBuilder.buildTargetGroup = BuildTargetGroup.Standalone;
-
+            assemblyBuilder.buildTargetGroup = buildTargetGroup;
+            
+            
             //添加额外的宏定义
             // assemblyBuilder.additionalDefines = new[]
             // {
