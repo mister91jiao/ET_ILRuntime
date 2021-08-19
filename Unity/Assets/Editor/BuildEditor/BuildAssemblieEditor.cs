@@ -43,8 +43,7 @@ namespace ET
             
             BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
             
-            assemblyBuilder.compilerOptions.ApiCompatibilityLevel =
-                PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
+            assemblyBuilder.compilerOptions.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
            // assemblyBuilder.compilerOptions.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_4_6;
            
             assemblyBuilder.compilerOptions.CodeOptimization = CodeOptimization.Release;
